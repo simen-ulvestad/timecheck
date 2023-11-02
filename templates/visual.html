@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hours Summary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Hours Summary</h1>
+        <div>
+            <ul class="list-group">
+                {% for name, data in results.items() %}
+                    <li class="list-group-item">
+                        <h3 class="mb-3">{{ name }}</h3>
+                        <ul class="list-group">
+                            {% for date, hours in data.items() %}
+                                <li class="list-group-item">
+                                    <h5>{{ date }} - Total Hours: {{ hours.total }}</h5>
+                                    <p>File 1: {{ hours.file1 }}, File 2: {{ hours.file2 }}</p>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

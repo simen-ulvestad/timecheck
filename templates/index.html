@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Excel Files</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Upload Excel Files</h1>
+        <form action="/process" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file1">Jira Cloud:</label>
+                <input type="file" class="form-control-file" name="file1" id="file1" accept=".xlsx,.xls" required>
+            </div>
+            <div class="form-group">
+                <label for="file2">Jira Onprem:</label>
+                <input type="file" class="form-control-file" name="file2" id="file2" accept=".xlsx,.xls" required>
+            </div>
+            <div class="form-group">
+                <label for="file3">Timereg:</label>
+                <input type="file" class="form-control-file" name="file3" id="file3" accept=".xlsx,.xls,xlsx" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Check Hours</button>
+        </form>
+    </div>
+</body>
+</html>

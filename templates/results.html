@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .red-text {
+            color: red;
+        }
+        .code-text {
+            font-family: monospace;
+        }
+    </style>
+    <title>Result</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Comparison Result</h1>
+        {% for name, date_data in data.items() %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ name }}</h5>
+                <ul class="list-group list-group-flush">
+                    {% for date, info in date_data.items() %}
+                        {% if info.diff != 0 and 'date_hours' in info %}
+                            <li class="list-group-item">
+                                <div class="row">
+                                    <div class="col-2">
+                                        <span class="badge badge-primary">{{ date }}</span>
+                                    </div>
+                                    <div class="col-10">
+                                        <span class="red-text">{{ info.diff }}</span><br>
+                                        <span class="code-text">
+                                            (File1: {{ info.file1_hours }} + File2: {{ info.file2_hours }} = {{ info.date_hours }})<br>
+                                            {{ info.date_hours }} - File3: {{ info.file3_hours }} = {{ info.diff }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <footer>
+        <div class="p-4"></div>
+    </footer>
+</body>
+</html>
