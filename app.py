@@ -71,9 +71,6 @@ def aggregate_excel_file(file_path, header_mapping):
 
     return aggregate_data
 
-
-
-
 # Function to convert Excel serial date to a formatted date string
 def excel_serial_to_date(serial):
     base_date = datetime(1899, 12, 30)
@@ -88,14 +85,13 @@ def home():
 @app.route('/process', methods=['POST'])
 def upload_files():
     file1 = request.files['file1']
-    file2 = request.files['file2']
     file3 = request.files['file3']
 
     # Ensure uploaded files are secure and have allowed extensions
     allowed_extensions = {'.xls', '.xlsx', 'xlsx', 'xls'}
     uploaded_files = []
 
-    for uploaded_file in [file1, file2, file3]:
+    for uploaded_file in [file1, file3]:
         if '.' in uploaded_file.filename:
             file_extension = uploaded_file.filename.rsplit('.', 1)[1].lower()
             if file_extension in allowed_extensions:
@@ -107,20 +103,14 @@ def upload_files():
                 app.logger.error(f"Invalid file format: {file_extension}")
                 return "Invalid file format. Allowed formats are .xls and .xlsx."
 
-    # Perform aggregation on file1 and file2
+    # Perform aggregation on file1 
     file1_header_mapping = {
-        'Full name': 'Full name',
-        'Hours': 'Hours',
-        'Date created': 'Work date'
-    }
-    file2_header_mapping = {
         'Full name': 'Full name',
         'Hours': 'Hours',
         'Date created': 'Work date'
     }
 
     aggregate_data_file1 = aggregate_excel_file(uploaded_files[0], file1_header_mapping)
-    aggregate_data_file2 = aggregate_excel_file(uploaded_files[1], file2_header_mapping)
 
     # Perform aggregation on file3
     file3_header_mapping = {
@@ -129,19 +119,14 @@ def upload_files():
         'Date created': 'Posting Date'
     }
     aggregate_data_file3 = None  # Set initial value to None
-    if len(uploaded_files) > 2:
-        aggregate_data_file3 = aggregate_excel_file(uploaded_files[2], file3_header_mapping)
+    if len(uploaded_files) > 1:
+        aggregate_data_file3 = aggregate_excel_file(uploaded_files[1], file3_header_mapping)
 
-    # Combine data from file1 and file2
+    # Combine data from file1
     combined_data = defaultdict(lambda: defaultdict(float))
 
     if aggregate_data_file1 is not None:
         for name, date_hours in aggregate_data_file1.items():
-            for date, hours in date_hours.items():
-                combined_data[name][date] += hours
-
-    if aggregate_data_file2 is not None:
-        for name, date_hours in aggregate_data_file2.items():
             for date, hours in date_hours.items():
                 combined_data[name][date] += hours
 
@@ -155,7 +140,6 @@ def upload_files():
                     date_info = {}
                     date_info['diff'] = combined_data[name][date] - hours
                     date_info['file1_hours'] = aggregate_data_file1[name].get(date, 0)
-                    date_info['file2_hours'] = aggregate_data_file2[name].get(date, 0)
                     date_info['date_hours'] = combined_data[name][date]
                     date_info['file3_hours'] = hours
 
@@ -172,4 +156,4 @@ if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
 if __name__ == "__main__":
-      app.run(host='127.0.0.1', port=3000, debug=True)
+      app.run(host='0.0.0.0', port=3005, debug=True)
