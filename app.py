@@ -106,7 +106,7 @@ def upload_files():
     # Perform aggregation on file1 
     file1_header_mapping = {
         'Full name': 'Full name',
-        'Hours': 'Hours',
+        'Hours': 'Logged Hours',
         'Date created': 'Work date'
     }
 
